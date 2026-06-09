@@ -1354,9 +1354,13 @@ function fxChromaticAberration(ctx, w, h, amount) {
 
 function fxScanlines(ctx, w, h, amount) {
   ctx.save();
-  ctx.globalAlpha = amount * 0.5;
+  ctx.globalAlpha = amount * 0.55;
   ctx.fillStyle = '#000';
-  for (let y = 0; y < h; y += 2) ctx.fillRect(0, y, w, 1);
+  // Scale line density to image size so they stay visible
+  // after canvas downscaling, regardless of orientation.
+  const spacing = Math.max(2, Math.round(h / 240));
+  const thickness = Math.max(1, Math.floor(spacing * 0.5));
+  for (let y = 0; y < h; y += spacing) ctx.fillRect(0, y, w, thickness);
   ctx.restore();
 }
 
